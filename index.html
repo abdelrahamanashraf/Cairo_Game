@@ -3,6 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <script>
+      (function () {
+        try {
+          var desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+          if (desc && typeof desc.get === 'function' && !desc.set && desc.configurable) {
+            Object.defineProperty(window, 'fetch', {
+              get: desc.get,
+              set: function () {},
+              configurable: true,
+              enumerable: desc.enumerable,
+            });
+          }
+        } catch (_e) {}
+
+        var isExtensionFetchError = function (msg, filename, stack) {
+          var source = String(filename || '') + ' ' + String(stack || '');
+          var message = String(msg || '');
+          return (
+            source.indexOf('chrome-extension://') !== -1 ||
+            source.indexOf('moz-extension://') !== -1 ||
+            (message.indexOf('Cannot set property fetch') !== -1 && message.indexOf('getter') !== -1)
+          );
+        };
+
+        window.addEventListener(
+          'error',
+          function (event) {
+            if (isExtensionFetchError(event.message, event.filename, event.error && event.error.stack)) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+            }
+          },
+          true
+        );
+
+        window.addEventListener(
+          'unhandledrejection',
+          function (event) {
+            var reason = event.reason;
+            if (
+              isExtensionFetchError(
+                reason && reason.message ? reason.message : reason,
+                '',
+                reason && reason.stack ? reason.stack : ''
+              )
+            ) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+            }
+          },
+          true
+        );
+      })();
+    </script>
     <title>Cairo Precinct — 3D Vertical Slice &amp; UE5 Blueprint Studio</title>
     <meta
       name="description"

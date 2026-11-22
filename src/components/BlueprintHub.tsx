@@ -9,6 +9,10 @@ import {
   UE5_STARTER_SCRIPTS,
 } from '../data/ue5BlueprintData';
 import { BlueprintSection } from '../game/types';
+import { VisualBlueprintLogic } from './VisualBlueprintLogic';
+import { AIBehaviorTreeSection } from './AIBehaviorTreeSection';
+import { DynamicSkyTool } from './DynamicSkyTool';
+import { CesiumTilesSection } from './CesiumTilesSection';
 
 interface BlueprintHubProps {
   activeSection: BlueprintSection;
@@ -23,14 +27,6 @@ export const BlueprintHub: React.FC<BlueprintHubProps> = ({
   onSelectSection,
   onLaunchPlayableSlice,
 }) => {
-  // Cesium Interactive Tuner State
-  const [selectedDistrictId, setSelectedDistrictId] = useState(CAIRO_DISTRICTS[0].id);
-  const [maxSSE, setMaxSSE] = useState(28);
-  const [maxSimultaneousLoads, setMaxSimultaneousLoads] = useState(3);
-  const [cacheMB, setCacheMB] = useState(192);
-  const [poolSizeMB, setPoolSizeMB] = useState(384);
-  const [arenaRadiusM, setArenaRadiusM] = useState(140);
-
   // Architecture / Code Viewer State
   const [selectedScriptId, setSelectedScriptId] = useState(UE5_STARTER_SCRIPTS[0].id);
   const [codeTab, setCodeTab] = useState<'header' | 'source' | 'blueprint'>('header');
@@ -58,56 +54,10 @@ export const BlueprintHub: React.FC<BlueprintHubProps> = ({
     });
   };
 
-  const selectedDistrict = useMemo(
-    () => CAIRO_DISTRICTS.find((d) => d.id === selectedDistrictId) ?? CAIRO_DISTRICTS[0],
-    [selectedDistrictId],
-  );
-
   const selectedScript = useMemo(
     () => UE5_STARTER_SCRIPTS.find((s) => s.id === selectedScriptId) ?? UE5_STARTER_SCRIPTS[0],
     [selectedScriptId],
   );
-
-  // Real-time mobile performance estimator for Cesium + Google 3D Tiles on mid-range smartphones
-  const cesiumMetrics = useMemo(() => {
-    // Lower SSE = exponentially heavier geometry; mobile sweet spot is 24-32
-    const ssePenalty = maxSSE < 18 ? 34 : maxSSE < 24 ? 16 : maxSSE <= 34 ? 4 : 0;
-    const loadPenalty = maxSimultaneousLoads > 5 ? (maxSimultaneousLoads - 4) * 4 : 0;
-    const estFps = Math.max(22, Math.min(60, Math.round(62 - ssePenalty - loadPenalty)));
-    const estRamMB = Math.round(520 + cacheMB + poolSizeMB * 0.85 + (arenaRadiusM / 100) * 65);
-    const triangleBudgetK = Math.round((420 * (28 / Math.max(12, maxSSE))) + arenaRadiusM * 0.45);
-
-    let viabilityLabel = 'Target 60 FPS Met (Mid-Range Android / iOS Safe)';
-    let viabilityColor = 'text-emerald-400';
-    if (estFps < 45 || estRamMB > 1550) {
-      viabilityLabel = 'High Risk: Thermal Throttling / OOM Likely on Mid-Range Phones';
-      viabilityColor = 'text-[#FCA5A5]';
-    } else if (estFps < 55 || estRamMB > 1300) {
-      viabilityLabel = 'Borderline 45–55 FPS: Raise SSE to 28+ or Lower Tile Cache';
-      viabilityColor = 'text-[#FDE68A]';
-    }
-
-    const iniSnippet = `; Config/DefaultEngine.ini — Mobile Cesium + UE5 Guardrails
-[/Script/Engine.RendererSettings]
-r.Mobile.ShadingPath=0               ; Mobile Forward Shading (60 FPS target)
-r.Nanite=0                           ; Disabled on mobile (Google 3D Tiles use classic LODs)
-r.DynamicGlobalIlluminationMethod=0  ; Disable Lumen on mobile
-r.Streaming.PoolSize=${poolSizeMB}             ; Strict VRAM texture streaming pool (MB)
-r.MobileContentScaleFactor=1.0
-
-; CesiumGeoreference & Cesium3DTileset — ${selectedDistrict.name}
-OriginLatitude=${selectedDistrict.lat.toFixed(4)}
-OriginLongitude=${selectedDistrict.lon.toFixed(4)}
-OriginHeight=${selectedDistrict.elevationM}.0
-MaximumScreenSpaceError=${maxSSE}.0
-MaximumSimultaneousTileLoads=${maxSimultaneousLoads}
-MaximumCachedBytes=${cacheMB * 1024 * 1024} ; ${cacheMB} MB strict tile cache
-PreloadAncestors=false
-PreloadSiblings=false
-CartographicPolygonCutoutRadiusMeters=${arenaRadiusM}`;
-
-    return { estFps, estRamMB, triangleBudgetK, viabilityLabel, viabilityColor, iniSnippet };
-  }, [maxSSE, maxSimultaneousLoads, cacheMB, poolSizeMB, arenaRadiusM, selectedDistrict]);
 
   const copyText = (id: string, text: string) => {
     void navigator.clipboard?.writeText(text);
@@ -159,6 +109,9 @@ CartographicPolygonCutoutRadiusMeters=${arenaRadiusM}`;
               { id: 'cesium', label: '02. Cesium & 3D Tiles' },
               { id: 'architecture', label: '03. Folder Tree & 5 Scripts' },
               { id: 'campaign', label: '04. Campaign & IP Bible' },
+              { id: 'visual_logic', label: '05. Visual Blueprint Logic' },
+              { id: 'ai_behavior_tree', label: '06. AI Behavior Tree' },
+              { id: 'dynamic_sky', label: '07. Dynamic Sky' },
             ] as const
           ).map((tab) => (
             <button
@@ -284,262 +237,8 @@ CartographicPolygonCutoutRadiusMeters=${arenaRadiusM}`;
           </div>
         )}
 
-        {/* SECTION 2: CESIUM + GOOGLE PHOTOREALISTIC 3D TILES MOBILE SETUP */}
-        {activeSection === 'cesium' && (
-          <div className="mt-8 space-y-8">
-            {/* District Selector Strip */}
-            <div>
-              <h2 className="font-display text-2xl font-bold text-white">
-                Cesium for Unreal + Google 3D Tiles Mobile Setup
-              </h2>
-              <p className="mt-2 max-w-3xl text-sm text-[#9CA3AF]">
-                Select a Greater Cairo district coordinate below and tune the streaming parameters. Raw Google 3D Tiles
-                are strictly clipped out of the playable street block using a{' '}
-                <span className="font-mono text-xs text-[#FDE68A]">CesiumCartographicPolygon</span> so only the distant
-                Cairo skyline streams on mobile hardware.
-              </p>
-
-              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {CAIRO_DISTRICTS.map((dist) => {
-                  const activeDist = dist.id === selectedDistrict.id;
-                  return (
-                    <button
-                      key={dist.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedDistrictId(dist.id);
-                        setMaxSSE(dist.recommendedSSE);
-                        setArenaRadiusM(dist.recommendedArenaRadiusM);
-                      }}
-                      className={`rounded-xl border p-4 text-left transition-colors ${
-                        activeDist
-                          ? 'border-[#E89B3C] bg-[#1D222B]'
-                          : 'border-white/10 bg-[#161A20] hover:border-white/25'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between text-xs text-[#9CA3AF]">
-                        <span>Level {dist.level}</span>
-                        <span className="font-mono tabular-nums text-[#E89B3C]">
-                          {dist.lat.toFixed(4)}, {dist.lon.toFixed(4)}
-                        </span>
-                      </div>
-                      <div className="mt-1.5 font-display text-sm font-semibold text-white">{dist.name}</div>
-                      <div className="mt-1 text-xs text-[#9CA3AF]">{dist.arabicHint}</div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Interactive Mobile Streaming Budget Simulator */}
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-              <div className="space-y-5 rounded-xl border border-white/10 bg-[#161A20] p-6 lg:col-span-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-display text-lg font-semibold text-white">Mobile Streaming Budget Tuner</h3>
-                  <span className="font-mono text-xs text-[#9CA3AF]">Mid-Range Snapdragon 7 / A14</span>
-                </div>
-
-                {/* Slider 1: Maximum Screen Space Error */}
-                <div>
-                  <div className="flex items-center justify-between text-xs">
-                    <label htmlFor="sse-slider" className="font-medium text-[#F3F4F6]">
-                      Maximum Screen Space Error (SSE)
-                    </label>
-                    <span className="font-mono tabular-nums text-[#E89B3C]">
-                      {maxSSE} px (Mobile Sweet Spot: 24–32)
-                    </span>
-                  </div>
-                  <input
-                    id="sse-slider"
-                    type="range"
-                    min={12}
-                    max={44}
-                    step={2}
-                    value={maxSSE}
-                    onChange={(e) => setMaxSSE(Number(e.target.value))}
-                    className="mt-2 w-full accent-[#E89B3C]"
-                  />
-                  <p className="mt-1 text-[11px] text-[#9CA3AF]">
-                    Desktop default is 16. Raising SSE to 24–32 drops mobile tile triangle density by ~65% while keeping
-                    distant Cairo skylines recognizable.
-                  </p>
-                </div>
-
-                {/* Slider 2: Maximum Simultaneous Tile Loads */}
-                <div>
-                  <div className="flex items-center justify-between text-xs">
-                    <label htmlFor="loads-slider" className="font-medium text-[#F3F4F6]">
-                      Maximum Simultaneous Tile Loads
-                    </label>
-                    <span className="font-mono tabular-nums text-[#E89B3C]">{maxSimultaneousLoads} concurrent</span>
-                  </div>
-                  <input
-                    id="loads-slider"
-                    type="range"
-                    min={1}
-                    max={10}
-                    step={1}
-                    value={maxSimultaneousLoads}
-                    onChange={(e) => setMaxSimultaneousLoads(Number(e.target.value))}
-                    className="mt-2 w-full accent-[#E89B3C]"
-                  />
-                </div>
-
-                {/* Slider 3: Maximum Cached Bytes */}
-                <div>
-                  <div className="flex items-center justify-between text-xs">
-                    <label htmlFor="cache-slider" className="font-medium text-[#F3F4F6]">
-                      Cesium Maximum Cached Bytes
-                    </label>
-                    <span className="font-mono tabular-nums text-[#E89B3C]">{cacheMB} MB</span>
-                  </div>
-                  <input
-                    id="cache-slider"
-                    type="range"
-                    min={64}
-                    max={512}
-                    step={32}
-                    value={cacheMB}
-                    onChange={(e) => setCacheMB(Number(e.target.value))}
-                    className="mt-2 w-full accent-[#E89B3C]"
-                  />
-                </div>
-
-                {/* Slider 4: Texture Streaming Pool */}
-                <div>
-                  <div className="flex items-center justify-between text-xs">
-                    <label htmlFor="pool-slider" className="font-medium text-[#F3F4F6]">
-                      UE5 r.Streaming.PoolSize
-                    </label>
-                    <span className="font-mono tabular-nums text-[#E89B3C]">{poolSizeMB} MB</span>
-                  </div>
-                  <input
-                    id="pool-slider"
-                    type="range"
-                    min={192}
-                    max={768}
-                    step={64}
-                    value={poolSizeMB}
-                    onChange={(e) => setPoolSizeMB(Number(e.target.value))}
-                    className="mt-2 w-full accent-[#E89B3C]"
-                  />
-                </div>
-
-                {/* Slider 5: Playable Cutout Radius */}
-                <div>
-                  <div className="flex items-center justify-between text-xs">
-                    <label htmlFor="cutout-slider" className="font-medium text-[#F3F4F6]">
-                      CartographicPolygon Playable Cutout Radius
-                    </label>
-                    <span className="font-mono tabular-nums text-[#E89B3C]">{arenaRadiusM} m</span>
-                  </div>
-                  <input
-                    id="cutout-slider"
-                    type="range"
-                    min={80}
-                    max={280}
-                    step={10}
-                    value={arenaRadiusM}
-                    onChange={(e) => setArenaRadiusM(Number(e.target.value))}
-                    className="mt-2 w-full accent-[#E89B3C]"
-                  />
-                </div>
-              </div>
-
-              {/* Computed Mobile Telemetry + Generated INI Config */}
-              <div className="flex flex-col gap-5 lg:col-span-6">
-                <div className="rounded-xl border border-white/10 bg-[#161A20] p-5">
-                  <div className="text-xs text-[#9CA3AF]">Projected Mobile Headroom ({selectedDistrict.name})</div>
-                  <div className={`mt-1.5 text-sm font-semibold ${cesiumMetrics.viabilityColor}`}>
-                    {cesiumMetrics.viabilityLabel}
-                  </div>
-                  <div className="mt-4 grid grid-cols-3 gap-4 border-t border-white/10 pt-4">
-                    <div>
-                      <div className="text-[11px] text-[#9CA3AF]">Estimated FPS</div>
-                      <div className="mt-0.5 font-mono text-xl font-semibold tabular-nums text-white">
-                        {cesiumMetrics.estFps} FPS
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[11px] text-[#9CA3AF]">Est. Total RAM</div>
-                      <div className="mt-0.5 font-mono text-xl font-semibold tabular-nums text-white">
-                        {cesiumMetrics.estRamMB} MB
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[11px] text-[#9CA3AF]">Visible Triangles</div>
-                      <div className="mt-0.5 font-mono text-xl font-semibold tabular-nums text-white">
-                        ~{cesiumMetrics.triangleBudgetK}k
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Copy-ready UE5 INI + Cesium Property Snippet */}
-                <div className="flex flex-1 flex-col rounded-xl border border-white/10 bg-[#161A20]">
-                  <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-                    <span className="font-mono text-xs text-[#D1D5DB]">
-                      DefaultEngine.ini + Cesium3DTileset ({selectedDistrict.id})
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => copyText('cesium_ini', cesiumMetrics.iniSnippet)}
-                      className="flex items-center gap-1.5 rounded-md bg-[#0D0F12] px-3 py-1.5 text-xs font-medium text-[#E89B3C] transition-colors hover:bg-[#1D222B]"
-                    >
-                      {copiedId === 'cesium_ini' ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                      <span>{copiedId === 'cesium_ini' ? 'Copied' : 'Copy Config'}</span>
-                    </button>
-                  </div>
-                  <pre className="flex-1 overflow-x-auto p-4 font-mono text-xs leading-relaxed text-[#D1D5DB]">
-                    {cesiumMetrics.iniSnippet}
-                  </pre>
-                </div>
-              </div>
-            </div>
-
-            {/* 5-Step Cesium Setup Guide */}
-            <div className="rounded-xl border border-white/10 bg-[#161A20] p-6">
-              <h3 className="font-display text-lg font-semibold text-white">
-                Step-by-Step UE5 Integration Guide for {selectedDistrict.name}
-              </h3>
-              <ol className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-5">
-                {[
-                  {
-                    step: '01',
-                    title: 'Install Cesium Plugin',
-                    body: 'Add "Cesium for Unreal" from Fab / Unreal Marketplace, enable it in Plugins, and restart UE5.',
-                  },
-                  {
-                    step: '02',
-                    title: 'Pin Cairo Origin',
-                    body: `Place CesiumGeoreference at Lat ${selectedDistrict.lat.toFixed(4)}, Lon ${selectedDistrict.lon.toFixed(4)}, Height ${selectedDistrict.elevationM}m with Keep World Origin Near Camera enabled.`,
-                  },
-                  {
-                    step: '03',
-                    title: 'Link Google 3D Tiles',
-                    body: 'Add a Cesium3DTileset via Cesium ion (Google Photorealistic 3D Tiles) and disable Create Physics Meshes on the distant tileset.',
-                  },
-                  {
-                    step: '04',
-                    title: 'Clip Playable Arena',
-                    body: `Drop a CesiumCartographicPolygon covering a ${arenaRadiusM}m radius over the combat street and attach CesiumPolygonRasterOverlay to cleanly hide messy street-level tiles.`,
-                  },
-                  {
-                    step: '05',
-                    title: 'Drop Low-Poly Block',
-                    body: 'Place your hand-built PUBG-style Shubra modular buildings, taxis, and NavMesh inside the clipped zone, matched with golden-hour exponential height fog.',
-                  },
-                ].map((s) => (
-                  <li key={s.step} className="rounded-lg border border-white/8 bg-[#0D0F12]/60 p-4">
-                    <div className="font-mono text-xs text-[#E89B3C]">{s.step}</div>
-                    <div className="mt-1 font-display text-sm font-semibold text-white">{s.title}</div>
-                    <p className="mt-1.5 text-xs leading-relaxed text-[#9CA3AF]">{s.body}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        )}
+        {/* SECTION 2: CESIUM & 3D TILES (SSE & MAXIMUM SCREEN SPACE ERROR) */}
+        {activeSection === 'cesium' && <CesiumTilesSection />}
 
         {/* SECTION 3: UE5 FOLDER STRUCTURE & FIRST 5 STARTER SCRIPTS */}
         {activeSection === 'architecture' && (
@@ -767,6 +466,32 @@ CartographicPolygonCutoutRadiusMeters=${arenaRadiusM}`;
             </div>
           </div>
         )}
+
+        {/* SECTION 5: VISUAL BLUEPRINT LOGIC (D3 AI BEHAVIOR TREE NODE EDITOR) */}
+        {activeSection === 'visual_logic' && (
+          <div className="mt-8 space-y-5">
+            <div>
+              <h2 className="font-display text-2xl font-bold text-white">
+                Visual Blueprint Logic — AI Behavior Tree Node Editor
+              </h2>
+              <p className="mt-2 max-w-3xl text-sm text-[#9CA3AF]">
+                Interactive D3 flowchart of the UE5 Behavior Trees powering precinct henchmen and district bosses. Drag
+                nodes to reorganize the graph, scroll to zoom, toggle live execution flow simulation, and click any node
+                to inspect its C++ task class and Blackboard keys.
+              </p>
+            </div>
+
+            <div className="flex h-[600px] flex-col overflow-hidden rounded-xl border border-white/10 bg-[#161A20]">
+              <VisualBlueprintLogic />
+            </div>
+          </div>
+        )}
+
+        {/* SECTION 6: AI BEHAVIOR TREE & UE5 AI CONTROLLER LOGIC */}
+        {activeSection === 'ai_behavior_tree' && <AIBehaviorTreeSection />}
+
+        {/* SECTION 7: DYNAMIC SKY (SHUBRA SUNSET CONFIGURATOR) */}
+        {activeSection === 'dynamic_sky' && <DynamicSkyTool />}
       </div>
     </div>
   );

@@ -1,12 +1,29 @@
-export type AppWorkspace = 'slice' | 'blueprint';
+export type DistrictId = 'shubra' | 'old_cairo' | 'sheikh_zayed' | 'new_capital';
 
-export type BlueprintSection = 'verdict' | 'cesium' | 'architecture' | 'campaign';
+export type BlueprintSection =
+  | 'verdict'
+  | 'cesium'
+  | 'architecture'
+  | 'campaign'
+  | 'visual_logic'
+  | 'ai_behavior_tree'
+  | 'dynamic_sky';
 
-export type MatchPhase = 'briefing' | 'wave1' | 'boss_intro' | 'boss_fight' | 'victory' | 'defeat';
+export type GameOverlay = 'none' | 'map' | 'music' | 'blueprint' | 'pause';
+
+export type MatchPhase = 'title' | 'wave1' | 'boss_intro' | 'boss_fight' | 'victory' | 'defeat';
 
 export type CameraPreset = 'shoulder' | 'wide';
 
 export type PlayerStance = 'standing' | 'crouching' | 'sprinting';
+
+export type CharacterArchetype =
+  | 'player'
+  | 'henchman'
+  | 'boss_el_ameen'
+  | 'boss_zarzour'
+  | 'boss_hefny'
+  | 'boss_architect';
 
 export interface AABBCollider {
   id: string;
@@ -22,6 +39,10 @@ export interface AABBCollider {
 
 export interface HudSnapshot {
   phase: MatchPhase;
+  districtId: DistrictId;
+  districtName: string;
+  districtArabic: string;
+  levelNumber: number;
   playerHp: number;
   playerMaxHp: number;
   ammo: number;
@@ -45,18 +66,22 @@ export interface HudSnapshot {
   bossTitle: string;
   bossHp: number;
   bossMaxHp: number;
-  bossPhase: 1 | 2;
+  bossPhase: 1 | 2 | 3;
+  bossWindup: boolean;
   announcement: string;
   pointerLocked: boolean;
   fpsEstimate: number;
   isSoftwareGl: boolean;
   nearbyPickupLabel: string | null;
+  playerX: number;
+  playerZ: number;
 }
 
 export interface GameSettings {
   autoAimAssist: boolean;
   showTouchControls: boolean;
   muted: boolean;
+  musicEnabled: boolean;
   cameraPreset: CameraPreset;
 }
 

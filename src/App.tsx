@@ -3,146 +3,58 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useRef, useState } from 'react';
-import { BlueprintHub } from './components/BlueprintHub';
+import { useEffect, useState } from 'react';
+import { BlueprintHubSidebar } from './components/BlueprintHubSidebar';
 import { PlayableSliceView } from './components/PlayableSliceView';
-import { AppWorkspace, BlueprintSection } from './game/types';
 
 export default function App() {
-  const [workspace, setWorkspace] = useState<AppWorkspace>('slice');
-  const [blueprintSection, setBlueprintSection] = useState<BlueprintSection>('verdict');
-  const sliceActionsRef = useRef<{ deploy: () => void; jumpBoss: () => void } | null>(null);
+  const [mapsQuotaExceeded, setMapsQuotaExceeded] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 1180 : true,
+  );
 
-  const openBlueprintSection = (section: BlueprintSection) => {
-    setBlueprintSection(section);
-    setWorkspace('blueprint');
-  };
-
-  const launchPlayableSlice = () => {
-    setWorkspace('slice');
-    sliceActionsRef.current?.deploy();
-  };
+  useEffect(() => {
+    const onQuotaExceeded = () => setMapsQuotaExceeded(true);
+    window.addEventListener('gmp-quota-exceeded', onQuotaExceeded);
+    return () => window.removeEventListener('gmp-quota-exceeded', onQuotaExceeded);
+  }, []);
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-[#0D0F12] text-[#F3F4F6]">
-      {/* Strict 3-Zone Top Bar Contract */}
-      <header className="z-50 flex h-14 shrink-0 items-center justify-between gap-8 border-b border-white/10 bg-[#0D0F12] px-6">
-        {/* Zone 1: Single text wordmark */}
-        <button
-          type="button"
-          onClick={() => setWorkspace('slice')}
-          className="font-display text-lg font-bold tracking-tight text-white whitespace-nowrap shrink-0 transition-colors hover:text-[#E89B3C]"
-        >
-          Cairo Precinct
-        </button>
-
-        {/* Zone 2: 5 concise single-line text navigation links */}
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex" aria-label="Primary">
-          <button
-            type="button"
-            onClick={() => setWorkspace('slice')}
-            className={`border-b-2 py-1 transition-colors whitespace-nowrap shrink-0 ${
-              workspace === 'slice'
-                ? 'border-[#E89B3C] text-white'
-                : 'border-transparent text-[#9CA3AF] hover:text-white'
-            }`}
-          >
-            3D Vertical Slice
-          </button>
-          <button
-            type="button"
-            onClick={() => openBlueprintSection('verdict')}
-            className={`border-b-2 py-1 transition-colors whitespace-nowrap shrink-0 ${
-              workspace === 'blueprint' && blueprintSection === 'verdict'
-                ? 'border-[#E89B3C] text-white'
-                : 'border-transparent text-[#9CA3AF] hover:text-white'
-            }`}
-          >
-            Engine Verdict
-          </button>
-          <button
-            type="button"
-            onClick={() => openBlueprintSection('cesium')}
-            className={`border-b-2 py-1 transition-colors whitespace-nowrap shrink-0 ${
-              workspace === 'blueprint' && blueprintSection === 'cesium'
-                ? 'border-[#E89B3C] text-white'
-                : 'border-transparent text-[#9CA3AF] hover:text-white'
-            }`}
-          >
-            Cesium 3D Tiles
-          </button>
-          <button
-            type="button"
-            onClick={() => openBlueprintSection('architecture')}
-            className={`border-b-2 py-1 transition-colors whitespace-nowrap shrink-0 ${
-              workspace === 'blueprint' && blueprintSection === 'architecture'
-                ? 'border-[#E89B3C] text-white'
-                : 'border-transparent text-[#9CA3AF] hover:text-white'
-            }`}
-          >
-            UE5 Scripts
-          </button>
-          <button
-            type="button"
-            onClick={() => openBlueprintSection('campaign')}
-            className={`border-b-2 py-1 transition-colors whitespace-nowrap shrink-0 ${
-              workspace === 'blueprint' && blueprintSection === 'campaign'
-                ? 'border-[#E89B3C] text-white'
-                : 'border-transparent text-[#9CA3AF] hover:text-white'
-            }`}
-          >
-            Campaign Bible
-          </button>
-        </nav>
-
-        {/* Zone 3: 1 Primary Action */}
-        <div className="flex items-center shrink-0">
-          {workspace === 'slice' ? (
-            <button
-              type="button"
-              onClick={() => setWorkspace('blueprint')}
-              className="rounded-lg bg-[#E89B3C] px-4 py-1.5 text-xs font-semibold text-[#0D0F12] transition-colors hover:bg-[#F2AD54] whitespace-nowrap shrink-0"
+    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-[#0D0F12] text-[#F3F4F6]">
+      {mapsQuotaExceeded && (
+        <div className="sticky top-0 z-[100] flex w-full shrink-0 items-center justify-between gap-4 border-b border-amber-500/40 bg-amber-950/95 px-4 py-2 text-xs text-amber-100">
+          <span>
+            Google Maps Demo Key quota exceeded. To continue using live Greater Cairo maps without interruption, attach
+            your own Cloud project API key.{' '}
+            <a
+              href="https://developers.google.com/maps/ai/ai-studio?utm_campaign=gmp_mcp_codeassist_v1_aistudio#quota_exceeded_errors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline text-amber-300 hover:text-white"
             >
-              UE5 Blueprint
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={launchPlayableSlice}
-              className="rounded-lg bg-[#E89B3C] px-4 py-1.5 text-xs font-semibold text-[#0D0F12] transition-colors hover:bg-[#F2AD54] whitespace-nowrap shrink-0"
-            >
-              Play 3D Slice
-            </button>
-          )}
+              Learn how to fix quota errors
+            </a>
+          </span>
+          <button
+            type="button"
+            onClick={() => setMapsQuotaExceeded(false)}
+            className="shrink-0 rounded border border-amber-400/40 px-2 py-0.5 text-[11px] text-amber-200 hover:bg-amber-900"
+          >
+            Dismiss
+          </button>
         </div>
-      </header>
+      )}
 
-      {/* Main Stage — keeps WebGL engine alive & paused cleanly while Blueprint Hub is open */}
-      <main className="relative flex-1 overflow-hidden">
-        <div
-          className={`absolute inset-0 ${
-            workspace === 'slice' ? 'visible opacity-100' : 'pointer-events-none invisible opacity-0'
-          }`}
-        >
-          <PlayableSliceView
-            active={workspace === 'slice'}
-            onOpenBlueprint={() => setWorkspace('blueprint')}
-            onEngineReady={(actions) => {
-              sliceActionsRef.current = actions;
-            }}
-          />
-        </div>
+      <div className="flex min-h-0 flex-1 overflow-hidden">
+        <main className="relative min-w-0 flex-1 overflow-hidden">
+          <PlayableSliceView />
+        </main>
 
-        {workspace === 'blueprint' && (
-          <div className="absolute inset-0 z-40">
-            <BlueprintHub
-              activeSection={blueprintSection}
-              onSelectSection={setBlueprintSection}
-              onLaunchPlayableSlice={launchPlayableSlice}
-            />
-          </div>
-        )}
-      </main>
+        <BlueprintHubSidebar
+          open={sidebarOpen}
+          onToggleOpen={() => setSidebarOpen((prev) => !prev)}
+        />
+      </div>
     </div>
   );
 }
