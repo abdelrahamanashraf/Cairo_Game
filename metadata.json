@@ -1,0 +1,6 @@
+{
+  "name": "Cairo Precinct — 3D Vertical Slice & UE5 Blueprint Studio",
+  "description": "Playable 3D third-person Cairo shooter vertical slice set in golden-hour Shubra with PUBG-style mobile controls, henchmen AI, and El-Ameen boss fight, paired with an Unreal Engine 5 Mobile solo-developer blueprint hub.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
