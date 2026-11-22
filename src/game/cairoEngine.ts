@@ -342,11 +342,19 @@ export class CairoSliceEngine {
     const districtTintHex =
       cfg.id === 'old_cairo'
         ? 0xf4c2a4
-        : cfg.id === 'sheikh_zayed'
-          ? 0xd6d2e4
-          : cfg.id === 'new_capital'
-            ? 0xd8e0ec
-            : 0xffffff;
+        : cfg.id === 'zamalek'
+          ? 0xf5dfca
+          : cfg.id === 'khan_el_khalili'
+            ? 0xebae8a
+            : cfg.id === 'giza_plateau'
+              ? 0xffe0a8
+              : cfg.id === 'maadi'
+                ? 0xe2c7be
+                : cfg.id === 'sheikh_zayed'
+                  ? 0xd6d2e4
+                  : cfg.id === 'new_capital'
+                    ? 0xd8e0ec
+                    : 0xffffff;
 
     new THREE.TextureLoader().load(
       this.materials.skyPanoramaUrl,

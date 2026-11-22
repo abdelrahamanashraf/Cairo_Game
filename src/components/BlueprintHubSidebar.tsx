@@ -10,8 +10,10 @@ import {
   Gamepad2,
   GitBranch,
   Globe,
+  MapPin,
   Package,
   ShieldAlert,
+  Smartphone,
   Sun,
 } from 'lucide-react';
 import { InventoryWeaponryPanel } from './InventoryWeaponryPanel';
@@ -19,6 +21,8 @@ import { VisualBlueprintLogic } from './VisualBlueprintLogic';
 import { AIBehaviorTreeSection } from './AIBehaviorTreeSection';
 import { DynamicSkyTool } from './DynamicSkyTool';
 import { CesiumTilesSection } from './CesiumTilesSection';
+import { MobileOptimizationSection } from './MobileOptimizationSection';
+import { DistrictMapManager } from './DistrictMapManager';
 
 export type StarterScriptCategory = 'All' | 'Controls & Camera' | 'World Streaming' | 'Combat & AI';
 
@@ -482,7 +486,14 @@ interface BlueprintHubSidebarProps {
 
 export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, onToggleOpen }) => {
   const [sidebarSection, setSidebarSection] = useState<
-    'scripts' | 'cesium_tiles' | 'inventory' | 'ai_behavior_tree' | 'visual_logic' | 'dynamic_sky'
+    | 'scripts'
+    | 'cesium_tiles'
+    | 'district_map_manager'
+    | 'inventory'
+    | 'ai_behavior_tree'
+    | 'visual_logic'
+    | 'dynamic_sky'
+    | 'mobile_optimization'
   >('scripts');
   const [activeCategory, setActiveCategory] = useState<StarterScriptCategory>('All');
   const [selectedScriptId, setSelectedScriptId] = useState<string>(STARTER_SCRIPTS[0].id);
@@ -582,11 +593,11 @@ export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, 
 
       {/* Top-Level Blueprint Hub Section Switcher */}
       <div className="border-b border-white/10 bg-[#0D0F12]/60 px-3 py-2.5">
-        <div className="grid grid-cols-3 gap-1 rounded-lg bg-[#0D0F12] p-1">
+        <div className="grid grid-cols-4 gap-1 rounded-lg bg-[#0D0F12] p-1">
           <button
             type="button"
             onClick={() => setSidebarSection('scripts')}
-            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors ${
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
               sidebarSection === 'scripts'
                 ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
                 : 'text-[#9CA3AF] hover:text-white'
@@ -598,19 +609,19 @@ export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, 
           <button
             type="button"
             onClick={() => setSidebarSection('cesium_tiles')}
-            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors ${
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
               sidebarSection === 'cesium_tiles'
                 ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
                 : 'text-[#9CA3AF] hover:text-white'
             }`}
           >
             <Globe className="h-3 w-3 shrink-0" />
-            <span>Cesium 3D</span>
+            <span>Cesium</span>
           </button>
           <button
             type="button"
             onClick={() => setSidebarSection('inventory')}
-            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors ${
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
               sidebarSection === 'inventory'
                 ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
                 : 'text-[#9CA3AF] hover:text-white'
@@ -622,7 +633,7 @@ export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, 
           <button
             type="button"
             onClick={() => setSidebarSection('ai_behavior_tree')}
-            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors ${
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
               sidebarSection === 'ai_behavior_tree'
                 ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
                 : 'text-[#9CA3AF] hover:text-white'
@@ -634,7 +645,7 @@ export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, 
           <button
             type="button"
             onClick={() => setSidebarSection('visual_logic')}
-            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors ${
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
               sidebarSection === 'visual_logic'
                 ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
                 : 'text-[#9CA3AF] hover:text-white'
@@ -646,7 +657,7 @@ export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, 
           <button
             type="button"
             onClick={() => setSidebarSection('dynamic_sky')}
-            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-medium whitespace-nowrap transition-colors ${
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
               sidebarSection === 'dynamic_sky'
                 ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
                 : 'text-[#9CA3AF] hover:text-white'
@@ -655,11 +666,37 @@ export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, 
             <Sun className="h-3 w-3 shrink-0" />
             <span>Sky</span>
           </button>
+          <button
+            type="button"
+            onClick={() => setSidebarSection('district_map_manager')}
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
+              sidebarSection === 'district_map_manager'
+                ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
+                : 'text-[#9CA3AF] hover:text-white'
+            }`}
+          >
+            <MapPin className="h-3 w-3 shrink-0" />
+            <span>Districts</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSidebarSection('mobile_optimization')}
+            className={`flex items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[10.5px] font-medium whitespace-nowrap transition-colors ${
+              sidebarSection === 'mobile_optimization'
+                ? 'bg-[#E89B3C] font-semibold text-[#0D0F12]'
+                : 'text-[#9CA3AF] hover:text-white'
+            }`}
+          >
+            <Smartphone className="h-3 w-3 shrink-0" />
+            <span>Mobile</span>
+          </button>
         </div>
       </div>
 
       {sidebarSection === 'cesium_tiles' ? (
         <CesiumTilesSection compact />
+      ) : sidebarSection === 'district_map_manager' ? (
+        <DistrictMapManager compact />
       ) : sidebarSection === 'inventory' ? (
         <InventoryWeaponryPanel />
       ) : sidebarSection === 'ai_behavior_tree' ? (
@@ -668,6 +705,8 @@ export const BlueprintHubSidebar: React.FC<BlueprintHubSidebarProps> = ({ open, 
         <VisualBlueprintLogic compact />
       ) : sidebarSection === 'dynamic_sky' ? (
         <DynamicSkyTool compact />
+      ) : sidebarSection === 'mobile_optimization' ? (
+        <MobileOptimizationSection compact />
       ) : (
         <>
           {/* Category Filter Segmented Control */}

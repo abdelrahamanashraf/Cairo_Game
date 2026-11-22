@@ -13,6 +13,8 @@ import { VisualBlueprintLogic } from './VisualBlueprintLogic';
 import { AIBehaviorTreeSection } from './AIBehaviorTreeSection';
 import { DynamicSkyTool } from './DynamicSkyTool';
 import { CesiumTilesSection } from './CesiumTilesSection';
+import { MobileOptimizationSection } from './MobileOptimizationSection';
+import { DistrictMapManager } from './DistrictMapManager';
 
 interface BlueprintHubProps {
   activeSection: BlueprintSection;
@@ -107,11 +109,13 @@ export const BlueprintHub: React.FC<BlueprintHubProps> = ({
             [
               { id: 'verdict', label: '01. Engine Verdict' },
               { id: 'cesium', label: '02. Cesium & 3D Tiles' },
-              { id: 'architecture', label: '03. Folder Tree & 5 Scripts' },
-              { id: 'campaign', label: '04. Campaign & IP Bible' },
-              { id: 'visual_logic', label: '05. Visual Blueprint Logic' },
-              { id: 'ai_behavior_tree', label: '06. AI Behavior Tree' },
-              { id: 'dynamic_sky', label: '07. Dynamic Sky' },
+              { id: 'district_map_manager', label: '03. District Map Manager' },
+              { id: 'architecture', label: '04. Folder Tree & 5 Scripts' },
+              { id: 'campaign', label: '05. Campaign & IP Bible' },
+              { id: 'visual_logic', label: '06. Visual Blueprint Logic' },
+              { id: 'ai_behavior_tree', label: '07. AI Behavior Tree' },
+              { id: 'dynamic_sky', label: '08. Dynamic Sky' },
+              { id: 'mobile_optimization', label: '09. Mobile Optimization' },
             ] as const
           ).map((tab) => (
             <button
@@ -239,6 +243,9 @@ export const BlueprintHub: React.FC<BlueprintHubProps> = ({
 
         {/* SECTION 2: CESIUM & 3D TILES (SSE & MAXIMUM SCREEN SPACE ERROR) */}
         {activeSection === 'cesium' && <CesiumTilesSection />}
+
+        {/* SECTION 3: DISTRICT MAP MANAGER (CESIUM 3D TILES & TARGET COORDINATES) */}
+        {activeSection === 'district_map_manager' && <DistrictMapManager />}
 
         {/* SECTION 3: UE5 FOLDER STRUCTURE & FIRST 5 STARTER SCRIPTS */}
         {activeSection === 'architecture' && (
@@ -492,6 +499,9 @@ export const BlueprintHub: React.FC<BlueprintHubProps> = ({
 
         {/* SECTION 7: DYNAMIC SKY (SHUBRA SUNSET CONFIGURATOR) */}
         {activeSection === 'dynamic_sky' && <DynamicSkyTool />}
+
+        {/* SECTION 8: MOBILE OPTIMIZATION (NANITE, LUMEN & LIGHT BAKING) */}
+        {activeSection === 'mobile_optimization' && <MobileOptimizationSection />}
       </div>
     </div>
   );

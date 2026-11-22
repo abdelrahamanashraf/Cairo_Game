@@ -56,7 +56,16 @@ export interface CairoArenaData {
   dispose: () => void;
 }
 
-export const DISTRICT_ORDER: DistrictId[] = ['shubra', 'old_cairo', 'sheikh_zayed', 'new_capital'];
+export const DISTRICT_ORDER: DistrictId[] = [
+  'shubra',
+  'old_cairo',
+  'zamalek',
+  'khan_el_khalili',
+  'giza_plateau',
+  'maadi',
+  'sheikh_zayed',
+  'new_capital',
+];
 
 export const DISTRICT_CONFIGS: Record<DistrictId, DistrictArenaConfig> = {
   shubra: {
@@ -117,9 +126,125 @@ export const DISTRICT_CONFIGS: Record<DistrictId, DistrictArenaConfig> = {
     bossIntroAnnouncement: 'Boss Alert: El-Moallem Zarzour emerges from the Sabtiya archway!',
     victoryAnnouncement: 'Old Cairo Secured: El-Moallem Zarzour defeated!',
   },
+  zamalek: {
+    id: 'zamalek',
+    levelNumber: 3,
+    name: 'Zamalek — Nile Island Corniche',
+    arabicName: 'الزمالك / كورنيش النيل',
+    skyTop: '#2c4a6b',
+    skyMid: '#6f7e91',
+    skyHorizon: '#e2a362',
+    skyBottom: '#8d6c4d',
+    fogHex: 0xc99666,
+    fogDensity: 0.0076,
+    sunColor: 0xffcb82,
+    sunIntensity: 2.7,
+    sunPosition: [-40, 26, -18],
+    hemiSky: 0x8db3d9,
+    hemiGround: 0x6f5941,
+    hemiIntensity: 0.98,
+    rimColor: 0x7bc2e8,
+    rimIntensity: 0.72,
+    bossArchetype: 'boss_el_ameen',
+    bossName: 'Colonel El-Sayed',
+    bossTitle: 'Corniche Contraband Commander · Zamalek',
+    bossMaxHp: 500,
+    bossWeaponStyle: 'rifle',
+    bossPhase2Announcement: 'El-Sayed Phase 2: Corniche dock enforcers flanking along the Nile!',
+    waveAnnouncement: 'Level 03 — Zamalek: Sweep the Nile Corniche patrol to expose Colonel El-Sayed.',
+    bossIntroAnnouncement: 'Boss Alert: Colonel El-Sayed deploys from the Gezira Embassy gate!',
+    victoryAnnouncement: 'Zamalek Secured: Nile Corniche cleared!',
+  },
+  khan_el_khalili: {
+    id: 'khan_el_khalili',
+    levelNumber: 4,
+    name: 'Khan El-Khalili / Al-Azhar Bazaar',
+    arabicName: 'خان الخليلي / الأزهر',
+    skyTop: '#2c1f38',
+    skyMid: '#723f44',
+    skyHorizon: '#d97b3e',
+    skyBottom: '#7e4326',
+    fogHex: 0xb8663b,
+    fogDensity: 0.0112,
+    sunColor: 0xffa452,
+    sunIntensity: 2.4,
+    sunPosition: [28, 20, -28],
+    hemiSky: 0x9b6d67,
+    hemiGround: 0x5c3420,
+    hemiIntensity: 0.86,
+    rimColor: 0xffbe63,
+    rimIntensity: 0.8,
+    bossArchetype: 'boss_zarzour',
+    bossName: 'El-Hagg Mansour',
+    bossTitle: 'Bazaar Black-Market Broker · Khan El-Khalili',
+    bossMaxHp: 540,
+    bossWeaponStyle: 'shotgun',
+    bossPhase2Announcement: 'Mansour Phase 2: Bazaar ambushers rushing from the side souqs!',
+    waveAnnouncement: 'Level 04 — Khan El-Khalili: Clear the lantern-lit bazaar guards.',
+    bossIntroAnnouncement: 'Boss Alert: El-Hagg Mansour steps beneath the Al-Azhar arch!',
+    victoryAnnouncement: 'Khan El-Khalili Secured: Black-market syndicate broken!',
+  },
+  giza_plateau: {
+    id: 'giza_plateau',
+    levelNumber: 5,
+    name: 'Giza Plateau — Pyramids Overlook',
+    arabicName: 'هضبة الجيزة / الأهرامات',
+    skyTop: '#3a5575',
+    skyMid: '#9a7a5c',
+    skyHorizon: '#eba44e',
+    skyBottom: '#b87d42',
+    fogHex: 0xdca05a,
+    fogDensity: 0.007,
+    sunColor: 0xffcc70,
+    sunIntensity: 2.85,
+    sunPosition: [-46, 25, -34],
+    hemiSky: 0xa2bce0,
+    hemiGround: 0x946b3e,
+    hemiIntensity: 1.0,
+    rimColor: 0xffbe5c,
+    rimIntensity: 0.78,
+    bossArchetype: 'boss_hefny',
+    bossName: 'Captain Khafre',
+    bossTitle: 'Antiquities Syndicate Marksman · Giza Plateau',
+    bossMaxHp: 580,
+    bossWeaponStyle: 'sniper',
+    bossPhase2Announcement: 'Khafre Phase 2: Desert checkpoint spotters sweeping the dunes!',
+    waveAnnouncement: 'Level 05 — Giza Plateau: Neutralize the desert checkpoint guards.',
+    bossIntroAnnouncement: 'Boss Alert: Captain Khafre sights in beneath the Great Pyramids!',
+    victoryAnnouncement: 'Giza Plateau Secured: Antiquities smuggling ring dismantled!',
+  },
+  maadi: {
+    id: 'maadi',
+    levelNumber: 6,
+    name: 'Maadi — Degla Embassies Quarter',
+    arabicName: 'المعادي / دجلة',
+    skyTop: '#24304a',
+    skyMid: '#5f5b72',
+    skyHorizon: '#d48d57',
+    skyBottom: '#785741',
+    fogHex: 0xaa7958,
+    fogDensity: 0.0082,
+    sunColor: 0xffbe7d,
+    sunIntensity: 2.45,
+    sunPosition: [36, 22, -20],
+    hemiSky: 0x7c97ba,
+    hemiGround: 0x5c4a38,
+    hemiIntensity: 0.94,
+    rimColor: 0xf0ad6a,
+    rimIntensity: 0.72,
+    bossArchetype: 'boss_el_ameen',
+    bossName: 'The Degla Handler',
+    bossTitle: 'Syndicate Logistics Chief · Maadi Degla',
+    bossMaxHp: 550,
+    bossWeaponStyle: 'rifle',
+    bossPhase2Announcement: 'Degla Handler Phase 2: Convoy security rushing the palm boulevard!',
+    waveAnnouncement: 'Level 06 — Maadi Degla: Breach the tree-lined embassy security cordon.',
+    bossIntroAnnouncement: 'Boss Alert: The Degla Handler emerges from the armored convoy!',
+    victoryAnnouncement: 'Maadi Secured: Syndicate logistics network shut down!',
+  },
   sheikh_zayed: {
     id: 'sheikh_zayed',
-    levelNumber: 3,
+    levelNumber: 7,
     name: 'Sheikh Zayed Compound',
     arabicName: 'الشيخ زايد',
     skyTop: '#1e2c44',
@@ -139,16 +264,16 @@ export const DISTRICT_CONFIGS: Record<DistrictId, DistrictArenaConfig> = {
     bossArchetype: 'boss_hefny',
     bossName: 'El-Basha El-Hefny',
     bossTitle: 'Compound Baron · Sheikh Zayed Villa',
-    bossMaxHp: 560,
+    bossMaxHp: 590,
     bossWeaponStyle: 'sniper',
     bossPhase2Announcement: 'El-Hefny Phase 2: Armored compound security converging!',
-    waveAnnouncement: 'Level 03 — Sheikh Zayed: Breach the villa courtyard and watch for laser sights.',
+    waveAnnouncement: 'Level 07 — Sheikh Zayed: Breach the villa courtyard and watch for laser sights.',
     bossIntroAnnouncement: 'Boss Alert: El-Basha El-Hefny locks on with his compound DMR!',
     victoryAnnouncement: 'Sheikh Zayed Secured: El-Basha El-Hefny neutralized!',
   },
   new_capital: {
     id: 'new_capital',
-    levelNumber: 4,
+    levelNumber: 8,
     name: 'New Administrative Capital',
     arabicName: 'العاصمة الإدارية الجديدة',
     skyTop: '#172236',
@@ -171,7 +296,7 @@ export const DISTRICT_CONFIGS: Record<DistrictId, DistrictArenaConfig> = {
     bossMaxHp: 640,
     bossWeaponStyle: 'pulse',
     bossPhase2Announcement: 'Architect Phase 2: Syndicate shock troopers deployed to the plaza!',
-    waveAnnouncement: 'Level 04 — New Capital: Clear the Iconic Tower plaza guards.',
+    waveAnnouncement: 'Level 08 — New Capital: Clear the Iconic Tower plaza guards.',
     bossIntroAnnouncement: 'Final Boss: The Syndicate Architect descends with tactical drones!',
     victoryAnnouncement: 'Greater Cairo Liberated: The Syndicate Architect is down!',
   },
@@ -789,6 +914,219 @@ export function buildCairoArena(districtId: DistrictId, mats: CairoMaterialLibra
     const m2 = new THREE.Mesh(trackGeo(new THREE.CylinderGeometry(0.8, 1.3, 34, 10)), mats.distantSkyline);
     m2.position.set(24, 17, -60);
     root.add(m1, m2);
+  } else if (districtId === 'zamalek') {
+    // ZAMALEK — NILE ISLAND CORNICHE PROMENADE
+    const road = new THREE.Mesh(trackGeo(new THREE.PlaneGeometry(78, 84)), mats.asphalt);
+    road.rotation.x = -Math.PI / 2;
+    road.receiveShadow = true;
+    root.add(road);
+
+    // West Nile Waterfront Strip & Stone Corniche Balustrade
+    const nileWater = new THREE.Mesh(trackGeo(new THREE.PlaneGeometry(24, 88)), mats.waterPool);
+    nileWater.rotation.x = -Math.PI / 2;
+    nileWater.position.set(-30, 0.03, 0);
+    root.add(nileWater);
+
+    const promenade = new THREE.Mesh(trackGeo(new THREE.BoxGeometry(5.6, 0.24, 66)), mats.sidewalk);
+    promenade.position.set(-16.5, 0.12, 2);
+    promenade.receiveShadow = true;
+    root.add(promenade);
+    registerBox('zam_corniche_wall', -19.2, 0.9, 2, 0.9, 1.8, 66, mats.sidewalk, { isCover: true });
+
+    // North Gezira Embassy Pavilion Gate
+    registerBox('zam_n_l', -13.5, 6.4, -26.5, 17, 12.8, 8, mats.villaLimestone);
+    registerBox('zam_n_r', 13.5, 6.4, -26.5, 17, 12.8, 8, mats.villaLimestone);
+    registerBox('zam_n_bridge', 0, 9.8, -26.5, 10, 6, 8, mats.villaLimestone);
+    registerBox('zam_n_back', 0, 5.4, -30.5, 12, 10.8, 2, mats.villaLimestone);
+
+    // East Art-Deco Zamalek Apartment Facades
+    addCairoBuilding('zam_e1', 25.5, -10, 11, 16, 16, mats.villaLimestone, 'west');
+    addCairoBuilding('zam_e2', 25.5, 9, 11, 18, 18, mats.buildingOchre, 'west');
+    addCairoBuilding('zam_e3', 25.5, 25, 11, 14, 12, mats.buildingSandstone, 'west', false);
+
+    registerBox('zam_south_l', -14, 3.2, 31, 22, 6.4, 2.5, mats.villaLimestone);
+    registerBox('zam_south_r', 14, 3.2, 31, 22, 6.4, 2.5, mats.villaLimestone);
+
+    // Taxis, Diplomat SUVs & Corniche Cover
+    addArmoredSuv('zam_suv1', -6.2, -5.5, 0.15);
+    addCairoTaxi('zam_taxi1', 7.2, 5.2, -0.22);
+    addCairoTaxi('zam_taxi2', -5.4, 14.5, 0.3);
+    addBarrier('zam_b1', 8.5, -11.5, -0.2);
+    addBarrier('zam_b2', 0.4, 2.2, 0.08);
+    addCrateCluster('zam_c1', -11.8, 7.5);
+    addCrateCluster('zam_c2', 13.2, -3.5);
+
+    // Lush Nile-side Palms & Lamps
+    [-14.8, 16.5].forEach((px) => {
+      [-17, -5, 7, 19].forEach((pz) => addDatePalm(px, pz, 8.8));
+      [-11, 1, 13].forEach((lz) => addStreetLantern(px, lz, 5.8));
+    });
+
+    // Close-up Iconic Cairo Tower Silhouette directly across Gezira Island
+    const towerShaft = new THREE.Mesh(trackGeo(new THREE.CylinderGeometry(2.1, 3.2, 62, 14)), mats.distantSkyline);
+    towerShaft.position.set(-14, 31, -66);
+    const towerDeck = new THREE.Mesh(trackGeo(new THREE.CylinderGeometry(3.8, 2.2, 6.5, 14)), mats.distantSkyline);
+    towerDeck.position.set(-14, 63, -66);
+    const spire = new THREE.Mesh(trackGeo(new THREE.CylinderGeometry(0.18, 0.35, 14, 8)), mats.distantSkyline);
+    spire.position.set(-14, 72, -66);
+    root.add(towerShaft, towerDeck, spire);
+  } else if (districtId === 'khan_el_khalili') {
+    // KHAN EL-KHALILI / AL-AZHAR HISTORIC BAZAAR
+    const stone = new THREE.Mesh(trackGeo(new THREE.PlaneGeometry(78, 84)), mats.courtyardStone);
+    stone.rotation.x = -Math.PI / 2;
+    stone.receiveShadow = true;
+    root.add(stone);
+
+    // Fatimid Carved North Archway Gate
+    registerBox('kk_arch_l', -12.5, 6.5, -25.5, 17, 13, 7, mats.buildingSandstone);
+    registerBox('kk_arch_r', 12.5, 6.5, -25.5, 17, 13, 7, mats.buildingSandstone);
+    registerBox('kk_arch_top', 0, 10.0, -25.5, 10, 6, 7, mats.buildingSandstone);
+    registerBox('kk_arch_back', 0, 5.5, -29.5, 12, 11, 2, mats.buildingOldBrick);
+
+    // Overhead Bazaar Canopies & Lantern Beams
+    [-15, -5, 5, 15].forEach((cz) => {
+      const cloth = new THREE.Mesh(trackGeo(new THREE.PlaneGeometry(25, 4.0)), mats.awningStripe);
+      cloth.rotation.x = Math.PI / 2;
+      cloth.position.set(0, 5.4, cz);
+      root.add(cloth);
+    });
+
+    // Dense Fatimid Bazaar Shopfronts
+    addCairoBuilding('kk_w1', -23.5, -10, 12, 14, 16, mats.buildingSandstone, 'east');
+    addCairoBuilding('kk_w2', -23.5, 9, 12, 15, 18, mats.buildingOldBrick, 'east');
+    addCairoBuilding('kk_w3', -23.5, 25, 12, 13, 12, mats.buildingTerracotta, 'east', false);
+
+    addCairoBuilding('kk_e1', 23.5, -10, 12, 15, 16, mats.buildingOldBrick, 'west');
+    addCairoBuilding('kk_e2', 23.5, 9, 12, 14, 18, mats.buildingSandstone, 'west');
+    addCairoBuilding('kk_e3', 23.5, 25, 12, 13, 12, mats.buildingTerracotta, 'west', false);
+
+    registerBox('kk_south_l', -14, 3.8, 31, 22, 7.6, 3, mats.buildingSandstone);
+    registerBox('kk_south_r', 14, 3.8, 31, 22, 7.6, 3, mats.buildingSandstone);
+
+    // Tight Souq Spice/Carpet Crate Lanes & Stone Planters
+    addCrateCluster('kk_c1', -7.8, -11.5);
+    addCrateCluster('kk_c2', 7.5, -10.0);
+    addCrateCluster('kk_c3', -5.6, 1.5);
+    addCrateCluster('kk_c4', 5.8, 3.2);
+    addCrateCluster('kk_c5', -8.8, 12.8);
+    addCrateCluster('kk_c6', 8.2, 13.5);
+    addBarrier('kk_b1', 0, -4.5, 0.08);
+    addBarrier('kk_b2', 0.2, 11.2, -0.1);
+
+    // Dense Warm Bazaar Lanterns
+    [-11.5, 11.5].forEach((lx) => {
+      [-15, -5, 5, 15].forEach((lz) => addStreetLantern(lx, lz, 4.6));
+    });
+
+    // Al-Azhar Twin Minarets & Mosque Dome in North Horizon
+    [-16, 16].forEach((mx) => {
+      const m = new THREE.Mesh(trackGeo(new THREE.CylinderGeometry(0.95, 1.45, 42, 10)), mats.distantSkyline);
+      m.position.set(mx, 21, -62);
+      root.add(m);
+    });
+    const azharDome = new THREE.Mesh(
+      trackGeo(new THREE.SphereGeometry(7.2, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2)),
+      mats.distantSkyline,
+    );
+    azharDome.position.set(0, 12, -66);
+    root.add(azharDome);
+  } else if (districtId === 'giza_plateau') {
+    // GIZA PLATEAU — GREAT PYRAMIDS OVERLOOK CHECKPOINT
+    const sandFloor = new THREE.Mesh(trackGeo(new THREE.PlaneGeometry(92, 92)), mats.courtyardStone);
+    sandFloor.rotation.x = -Math.PI / 2;
+    sandFloor.receiveShadow = true;
+    root.add(sandFloor);
+
+    const centralRoad = new THREE.Mesh(trackGeo(new THREE.BoxGeometry(18, 0.07, 64)), mats.asphalt);
+    centralRoad.position.set(0, 0.035, 3);
+    centralRoad.receiveShadow = true;
+    root.add(centralRoad);
+
+    // North Sandstone Antiquities Checkpoint Gatehouse
+    registerBox('giza_n_l', -14.5, 4.6, -26, 17, 9.2, 7.5, mats.buildingSandstone);
+    registerBox('giza_n_r', 14.5, 4.6, -26, 17, 9.2, 7.5, mats.buildingSandstone);
+    registerBox('giza_n_top', 0, 7.2, -26, 12, 4.2, 7.5, mats.buildingSandstone);
+    registerBox('giza_n_back', 0, 4.5, -30, 14, 9, 2, mats.buildingSandstone);
+
+    // Low Fortified Sandstone Plateau Perimeter Walls (keeps Pyramids visible!)
+    registerBox('giza_w1', -26.5, 3.6, -6, 6, 7.2, 24, mats.buildingSandstone);
+    registerBox('giza_w2', -26.5, 3.2, 18, 6, 6.4, 22, mats.buildingOchre);
+    registerBox('giza_e1', 26.5, 3.6, -6, 6, 7.2, 24, mats.buildingSandstone);
+    registerBox('giza_e2', 26.5, 3.2, 18, 6, 6.4, 22, mats.buildingOchre);
+    registerBox('giza_s_l', -14, 2.5, 31, 22, 5, 2.5, mats.buildingSandstone);
+    registerBox('giza_s_r', 14, 2.5, 31, 22, 5, 2.5, mats.buildingSandstone);
+
+    // Desert Checkpoint Tactical Cover (Armored SUVs, Jersey Barriers, Crates)
+    addArmoredSuv('giza_suv1', -8.4, 4.5, 0.28);
+    addArmoredSuv('giza_suv2', 8.8, -6.5, -0.35);
+    addBarrier('giza_b1', 0, -11.2, 0);
+    addBarrier('giza_b2', -9.2, -12.0, 0.25);
+    addBarrier('giza_b3', 9.2, -12.0, -0.25);
+    addBarrier('giza_b4', -4.2, 13.5, 0.12);
+    addBarrier('giza_b5', 5.4, 14.5, -0.15);
+    addCrateCluster('giza_c1', -14.2, -2.5);
+    addCrateCluster('giza_c2', 14.0, 8.0);
+
+    addDatePalm(-18.5, -17, 7.8);
+    addDatePalm(18.5, -17, 8.2);
+    addStreetLantern(-14, -4, 5.6);
+    addStreetLantern(14, -4, 5.6);
+
+    // Three Monumental Great Pyramids of Giza rising across the North/NW Horizon
+    const pyrMat = mats.buildingSandstone;
+    const khufu = new THREE.Mesh(trackGeo(new THREE.ConeGeometry(34, 42, 4)), pyrMat);
+    khufu.position.set(-22, 20, -92);
+    khufu.rotation.y = Math.PI / 4;
+    const khafre = new THREE.Mesh(trackGeo(new THREE.ConeGeometry(28, 36, 4)), mats.buildingOchre);
+    khafre.position.set(24, 17, -86);
+    khafre.rotation.y = Math.PI / 4 + 0.15;
+    const menkaure = new THREE.Mesh(trackGeo(new THREE.ConeGeometry(16, 21, 4)), mats.distantSkyline);
+    menkaure.position.set(54, 10, -78);
+    menkaure.rotation.y = Math.PI / 4;
+    root.add(khufu, khafre, menkaure);
+  } else if (districtId === 'maadi') {
+    // MAADI — DEGLA EMBASSIES & LEAFY BOULEVARD
+    const road = new THREE.Mesh(trackGeo(new THREE.PlaneGeometry(80, 86)), mats.asphalt);
+    road.rotation.x = -Math.PI / 2;
+    road.receiveShadow = true;
+    root.add(road);
+
+    [-17.5, 17.5].forEach((sx) => {
+      const sw = new THREE.Mesh(trackGeo(new THREE.BoxGeometry(5.5, 0.2, 62)), mats.sidewalk);
+      sw.position.set(sx, 0.1, 3);
+      sw.receiveShadow = true;
+      root.add(sw);
+    });
+
+    // North Degla Compound Diplomatic Gatehouse
+    registerBox('md_n_l', -14, 5.6, -26, 17, 11.2, 8.5, mats.buildingTerracotta);
+    registerBox('md_n_r', 14, 5.6, -26, 17, 11.2, 8.5, mats.buildingTerracotta);
+    registerBox('md_n_mid', 0, 8.8, -26, 11, 5.4, 8.5, mats.villaLimestone);
+    registerBox('md_n_back', 0, 5.0, -30.5, 13, 10, 2, mats.buildingTerracotta);
+
+    // Shaded Terracotta & Limestone Degla Villas
+    addCairoBuilding('md_w1', -26.5, -10, 10, 11, 16, mats.villaLimestone, 'east', false);
+    addCairoBuilding('md_w2', -26.5, 10, 10, 12, 18, mats.buildingTerracotta, 'east', false);
+    addCairoBuilding('md_e1', 26.5, -10, 10, 12, 16, mats.buildingTerracotta, 'west', false);
+    addCairoBuilding('md_e2', 26.5, 10, 10, 11, 18, mats.villaLimestone, 'west', false);
+    registerBox('md_s_l', -14, 2.8, 31, 22, 5.6, 2.4, mats.buildingTerracotta);
+    registerBox('md_s_r', 14, 2.8, 31, 22, 5.6, 2.4, mats.buildingTerracotta);
+
+    // Convoy Armored SUVs, Taxis & Security Kiosks
+    addArmoredSuv('md_suv1', -6.6, 5.5, 0.2);
+    addArmoredSuv('md_suv2', 7.4, -5.2, -0.28);
+    addCairoTaxi('md_taxi', 5.8, 15.2, 1.35);
+    addBarrier('md_b1', -8.8, -11.5, 0.16);
+    addBarrier('md_b2', 8.8, -11.5, -0.16);
+    addBarrier('md_b3', -0.4, 0.5, 0.04);
+    addCrateCluster('md_c1', -12.6, -3.0);
+    addCrateCluster('md_c2', 12.6, 9.2);
+
+    // Dense Maadi Signature Palm Canopy Rows
+    [-15.2, 15.2].forEach((px) => {
+      [-18, -10, -2, 6, 14, 21].forEach((pz) => addDatePalm(px, pz, 9.2));
+      [-14, 0, 14].forEach((lz) => addStreetLantern(px, lz, 6.0));
+    });
   } else if (districtId === 'sheikh_zayed') {
     // SHEIKH ZAYED LUXURY VILLA COMPOUND
     const ground = new THREE.Mesh(trackGeo(new THREE.PlaneGeometry(82, 86)), mats.sidewalk);

@@ -29,6 +29,26 @@ const DISTRICT_OBJECTIVE_COPY: Record<
     locateTitle: 'Locate El-Moallem Zarzour',
     defeatTitle: 'Defeat El-Moallem Zarzour',
   },
+  zamalek: {
+    waveTitle: 'Sweep Contraband Patrols on Nile Corniche',
+    locateTitle: 'Locate Colonel El-Sayed',
+    defeatTitle: 'Defeat Colonel El-Sayed in Zamalek',
+  },
+  khan_el_khalili: {
+    waveTitle: 'Clear Bazaar Guards in Khan El-Khalili',
+    locateTitle: 'Locate El-Hagg Mansour',
+    defeatTitle: 'Defeat El-Hagg Mansour at Al-Azhar Arch',
+  },
+  giza_plateau: {
+    waveTitle: 'Neutralize Checkpoint Squad at Giza Plateau',
+    locateTitle: 'Locate Captain Khafre',
+    defeatTitle: 'Defeat Captain Khafre by the Pyramids',
+  },
+  maadi: {
+    waveTitle: 'Breach Convoy Guards in Maadi Degla',
+    locateTitle: 'Locate The Degla Handler',
+    defeatTitle: 'Neutralize The Degla Handler',
+  },
   sheikh_zayed: {
     waveTitle: 'Clear Villa Guards in Sheikh Zayed',
     locateTitle: 'Locate El-Basha El-Hefny',

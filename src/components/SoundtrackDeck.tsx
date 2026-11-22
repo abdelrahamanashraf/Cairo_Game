@@ -21,6 +21,26 @@ const DISTRICT_PROMPTS: Record<DistrictId, { label: string; prompt: string }> = 
     prompt:
       'Dark gritty Middle Eastern street thriller action music. Fast Egyptian darbuka rhythms, sharp plucked qanun and distorted electric oud, brooding cello drone, intense boss battle tension, instrumental, 134 BPM.',
   },
+  zamalek: {
+    label: 'Zamalek Nile Corniche Pursuit',
+    prompt:
+      'Sleek Mediterranean-meets-Cairo espionage action score along the Nile at sunset. Crisp oud plucks, cinematic string ostinato, tight modern percussion and driving bassline, instrumental only, 124 BPM.',
+  },
+  khan_el_khalili: {
+    label: 'Khan El-Khalili Souq Showdown',
+    prompt:
+      'Intense historic Cairo bazaar ambush score. Rapid tabla and riq percussion, dramatic Arabic Hijaz violin swells, resonant ney flute stabs, heavy cinematic brass hits, instrumental, 136 BPM.',
+  },
+  giza_plateau: {
+    label: 'Giza Pyramids Desert Duel',
+    prompt:
+      'Sweeping desert sniper standoff action score at the Giza Pyramids. Vast brass horns, haunting Egyptian rebab and oud phrases, thunderous war drums and pulsing sub-bass, instrumental, 120 BPM.',
+  },
+  maadi: {
+    label: 'Maadi Degla Twilight Raid',
+    prompt:
+      'Tense covert urban thriller soundtrack in dusk Cairo. Tight synth pulse, muted electric guitar, subtle Arabic oud accents, crisp tactical snare grooves, instrumental, 126 BPM.',
+  },
   sheikh_zayed: {
     label: 'Sheikh Zayed Compound Siege',
     prompt:

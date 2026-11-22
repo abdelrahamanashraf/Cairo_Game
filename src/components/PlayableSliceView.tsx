@@ -78,6 +78,10 @@ export const PlayableSliceView: React.FC = () => {
   const [clearedDistricts, setClearedDistricts] = useState<Record<DistrictId, boolean>>({
     shubra: false,
     old_cairo: false,
+    zamalek: false,
+    khan_el_khalili: false,
+    giza_plateau: false,
+    maadi: false,
     sheikh_zayed: false,
     new_capital: false,
   });
@@ -394,7 +398,7 @@ export const PlayableSliceView: React.FC = () => {
                 className="flex items-center gap-2 rounded-lg border border-white/20 bg-[#0D0F12]/90 px-4 py-3.5 text-xs font-semibold text-white transition-colors hover:border-[#E89B3C]"
               >
                 <MapPin className="h-4 w-4 text-[#E89B3C]" />
-                <span>Select District (4 Levels)</span>
+                <span>Select District ({CAIRO_DISTRICTS.length} Levels)</span>
               </button>
             </div>
           </div>
@@ -807,7 +811,7 @@ export const PlayableSliceView: React.FC = () => {
               {hud.phase === 'victory'
                 ? nextDistrictMeta
                   ? `Next target unlocked: Level 0${nextDistrictMeta.level} — ${nextDistrictMeta.name} (${nextDistrictMeta.villainArchetype}).`
-                  : 'All four Greater Cairo districts have been secured. Cairo is yours.'
+                  : 'All eight Greater Cairo districts have been secured. Cairo is yours.'
                 : 'Use taxis, barriers, and crouch cover when the boss laser sight locks on.'}
             </p>
 

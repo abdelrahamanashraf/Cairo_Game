@@ -1,3 +1,5 @@
+import { DistrictId } from '../game/types';
+
 export interface EngineComparisonRow {
   dimension: string;
   ue5Mobile: string;
@@ -6,7 +8,7 @@ export interface EngineComparisonRow {
 }
 
 export interface CairoDistrictPreset {
-  id: 'shubra' | 'old_cairo' | 'sheikh_zayed' | 'new_capital';
+  id: DistrictId;
   level: number;
   name: string;
   arabicHint: string;
@@ -135,8 +137,72 @@ export const CAIRO_DISTRICTS: CairoDistrictPreset[] = [
     lightingMood: 'Late afternoon amber glare with deep high-contrast alley shadows.',
   },
   {
-    id: 'sheikh_zayed',
+    id: 'zamalek',
     level: 3,
+    name: 'Zamalek — Nile Island Corniche',
+    arabicHint: 'الزمالك / كورنيش النيل',
+    lat: 30.0609,
+    lon: 31.2197,
+    elevationM: 24,
+    recommendedArenaRadiusM: 155,
+    recommendedSSE: 26,
+    villainArchetype: 'Colonel El-Sayed (Corniche Contraband Commander)',
+    inspirationNote: 'Original syndicate officer operating smuggling docks along Gezira Island.',
+    bossMechanic: 'Mid-range Nile promenade firefight with flanking patrols emerging from embassy side streets and burst suppressive fire behind diplomat sedans.',
+    environmentNotes: 'Tree-lined Nile waterfront promenade, stone corniche balustrade, shimmering Nile water strip, art-deco Zamalek apartments, and close-up Cairo Tower vista.',
+    lightingMood: 'Warm golden reflection off the Nile with breezy palm shadows.',
+  },
+  {
+    id: 'khan_el_khalili',
+    level: 4,
+    name: 'Khan El-Khalili / Al-Azhar Bazaar',
+    arabicHint: 'خان الخليلي / الأزهر',
+    lat: 30.0477,
+    lon: 31.2623,
+    elevationM: 36,
+    recommendedArenaRadiusM: 135,
+    recommendedSSE: 26,
+    villainArchetype: 'El-Hagg Mansour (Bazaar Black-Market Broker)',
+    inspirationNote: 'Original close-quarters syndicate broker commanding the historic Fatimid souq lanes.',
+    bossMechanic: 'Tight CQB ambush beneath draped souq canopies. Uses rapid shotgun pushes through lantern-lit spice crate lanes and calls reinforcements from side arches.',
+    environmentNotes: 'Carved Fatimid limestone arches, brass street lanterns, striped fabric canopies, stacked spice and carpet crates, and Al-Azhar twin minarets overhead.',
+    lightingMood: 'Warm amber lantern glow cutting through dusky rose Cairo twilight.',
+  },
+  {
+    id: 'giza_plateau',
+    level: 5,
+    name: 'Giza Plateau — Pyramids Overlook',
+    arabicHint: 'هضبة الجيزة / الأهرامات',
+    lat: 29.9792,
+    lon: 31.1342,
+    elevationM: 68,
+    recommendedArenaRadiusM: 195,
+    recommendedSSE: 30,
+    villainArchetype: 'Captain Khafre (Antiquities Syndicate Marksman)',
+    inspirationNote: 'Original long-range syndicate commander guarding an illicit desert checkpoint.',
+    bossMechanic: 'Open sandstone plateau duel with long laser-telegraphed DMR sightlines, desert barricade cover hops, and armored flankers sweeping across sand drifts.',
+    environmentNotes: 'Sun-baked desert limestone checkpoint walls, supply crates, sand-drifted tarmac, armored SUVs, and the three Great Pyramids towering on the southern horizon.',
+    lightingMood: 'Blazing ochre desert sunset with luminous golden horizon haze.',
+  },
+  {
+    id: 'maadi',
+    level: 6,
+    name: 'Maadi — Degla Embassies Quarter',
+    arabicHint: 'المعادي / دجلة',
+    lat: 29.9602,
+    lon: 31.2569,
+    elevationM: 34,
+    recommendedArenaRadiusM: 175,
+    recommendedSSE: 28,
+    villainArchetype: 'The Degla Handler (Syndicate Logistics Chief)',
+    inspirationNote: 'Original covert intelligence fixer coordinating supply convoys from leafy Maadi villas.',
+    bossMechanic: 'Tactical villa-to-villa crossfire using palm-shaded street cover, rapid flank repositions, and armored security vehicles blocking the central intersection.',
+    environmentNotes: 'Shaded Degla boulevards, terracotta-trimmed garden villas, tall date palm rows, brick guard kiosks, and black convoy SUVs.',
+    lightingMood: 'Rich amber-violet late dusk with warm streetlamp pools.',
+  },
+  {
+    id: 'sheikh_zayed',
+    level: 7,
     name: 'Sheikh Zayed Compound',
     arabicHint: 'الشيخ زايد',
     lat: 30.0444,
@@ -152,7 +218,7 @@ export const CAIRO_DISTRICTS: CairoDistrictPreset[] = [
   },
   {
     id: 'new_capital',
-    level: 4,
+    level: 8,
     name: 'New Administrative Capital — Iconic Tower Plaza',
     arabicHint: 'العاصمة الإدارية الجديدة',
     lat: 30.0138,
@@ -161,7 +227,7 @@ export const CAIRO_DISTRICTS: CairoDistrictPreset[] = [
     recommendedArenaRadiusM: 240,
     recommendedSSE: 32,
     villainArchetype: 'The Syndicate Architect',
-    inspirationNote: 'Original futuristic mastermind tying all four Cairo districts together.',
+    inspirationNote: 'Original futuristic mastermind tying all eight Greater Cairo districts together.',
     bossMechanic: 'Vertical multi-tier plaza combat beneath the Iconic Tower. Deploys tactical recon drones, shield-bearing heavy troopers, and rotating cover barriers.',
     environmentNotes: 'Wide travertine civic plazas, glass curtain-wall lobbies, elevated walkways, and the distant Iconic Tower rising via clipped Cesium 3D Tiles.',
     lightingMood: 'High-contrast twilight gold against brushed glass and architectural floodlighting.',

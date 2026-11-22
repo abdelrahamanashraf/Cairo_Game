@@ -1,13 +1,23 @@
-export type DistrictId = 'shubra' | 'old_cairo' | 'sheikh_zayed' | 'new_capital';
+export type DistrictId =
+  | 'shubra'
+  | 'old_cairo'
+  | 'zamalek'
+  | 'khan_el_khalili'
+  | 'giza_plateau'
+  | 'maadi'
+  | 'sheikh_zayed'
+  | 'new_capital';
 
 export type BlueprintSection =
   | 'verdict'
   | 'cesium'
+  | 'district_map_manager'
   | 'architecture'
   | 'campaign'
   | 'visual_logic'
   | 'ai_behavior_tree'
-  | 'dynamic_sky';
+  | 'dynamic_sky'
+  | 'mobile_optimization';
 
 export type GameOverlay = 'none' | 'map' | 'music' | 'blueprint' | 'pause';
 
